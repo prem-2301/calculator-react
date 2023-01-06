@@ -1,0 +1,64 @@
+$buttonColor : #C5CCED;
+$result : #7083D4;
+// $operand: #7083D4;
+// $cancel : #4657A1;
+// $equal: #24326E;
+
+.calc{
+    display: flex;
+    justify-content: center;
+}
+
+.layout{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: minmax(5rem, auto) repeat(5, 4rem);
+    width: 40%;
+}
+
+
+.result{
+    padding: 0.5rem;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-size: 2rem;
+    text-align: end;    
+    background-color: $result;
+    grid-column: 1/-1;
+}
+
+.keys{
+    background-color: $buttonColor;
+    border: 0.01rem solid white;
+    font-size: 1.5rem;
+}
+
+.keys:hover
+{
+    background-color: #EDF0FF;
+    cursor: pointer;
+}
+
+.clear, .equal {
+    grid-column: span 2;
+}
+
+@media screen and (max-width: 1000px) {
+    .layout{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: minmax(15rem, auto) repeat(5, 10rem);
+        width: 100%;
+    }
+
+    .keys{
+        background-color: $buttonColor;
+    border: 0.01rem solid white;
+    font-size: 3rem;
+    }
+
+    .result{
+        padding: 2rem;
+        font-size: 3.5rem;
+    }
+  }
