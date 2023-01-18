@@ -11,8 +11,8 @@ $result : #7083D4;
 
 .layout{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: minmax(5rem, auto) repeat(5, 4rem);
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: minmax(5rem, auto) repeat(6, 4rem);
     width: 40%;
 }
 
@@ -22,9 +22,11 @@ $result : #7083D4;
     word-wrap: break-word;
     word-break: break-all;
     font-size: 2rem;
-    text-align: end;    
-    background-color: $result;
+    text-align: end;
     grid-column: 1/-1;
+    border: 1px black solid;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .keys{
@@ -39,15 +41,19 @@ $result : #7083D4;
     cursor: pointer;
 }
 
-.clear, .equal {
+.clear {
+    grid-column: span 3;
+}
+
+.equal {
     grid-column: span 2;
 }
 
 @media screen and (max-width: 1000px) {
     .layout{
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: minmax(15rem, auto) repeat(5, 10rem);
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: minmax(12rem, auto) repeat(6, 7rem);
         width: 100%;
     }
 

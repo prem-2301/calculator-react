@@ -1,11 +1,13 @@
 import React, { useReducer } from "react";
 import NumButton from "./NumButton.jsx";
 import OpButton from "./OpButton.jsx";
+import FuncButton from "./FuncButton.jsx";
 import "./Calculator.scss";
 
 export const actions = {
 	addDigit: "addDigit",
 	addOperation: "addOperation",
+	addFunction: "addFunction",
 	clear: "clear",
 	delete: "delete",
 	equals: "equals",
@@ -61,6 +63,17 @@ function reducer(state, { type, payload }) {
 				second: null,
 			};
 
+		case actions.addFunction:
+			if (state.second == null) {
+				return state;
+			}
+
+			return {
+				...state,
+				overwrite: true,
+				second: evaluateUnary(state, payload.func),
+			};
+
 		case actions.clear:
 			return {};
 
@@ -108,6 +121,43 @@ function reducer(state, { type, payload }) {
 	}
 }
 
+function evaluateUnary({ second }, func) {
+	const val = parseFloat(second);
+	let res1 = "";
+	// eslint-disable-next-line default-case
+	switch (func) {
+		case "x²":
+			res1 = Math.pow(val, 2);
+			break;
+
+		case "²√x":
+			res1 = Math.sqrt(val);
+			break;
+
+		case "10^(x)":
+			res1 = Math.pow(10, val);
+			break;
+
+		case "1/x":
+			res1 = 1 / val;
+			break;
+
+		case "sin(x)":
+			res1 = Math.sin(val * (Math.PI / 180));
+			break;
+
+		case "cos(x)":
+			res1 = Math.cos(val * (Math.PI / 180));
+			break;
+
+		case "tan(x)":
+			res1 = Math.tan(val * (Math.PI / 180));
+			break;
+	}
+
+	return res1.toString();
+}
+
 function evaluate({ second, first, operation }) {
 	const prev = parseFloat(first);
 	const curr = parseFloat(second);
@@ -129,6 +179,9 @@ function evaluate({ second, first, operation }) {
 		case "/":
 			res = prev / curr;
 			break;
+		case "^":
+			res = Math.pow(prev, curr);
+			break;
 	}
 
 	return res.toString();
@@ -141,9 +194,7 @@ function Calculator() {
 		<div className="calc">
 			<div className="layout">
 				<div className="result">
-					{first}
-					{operation}
-					{second}
+					{first} {operation} {second}
 				</div>
 				<button
 					className="keys clear"
@@ -152,24 +203,43 @@ function Calculator() {
 					C
 				</button>
 				<button
-					className="keys"
+					className="keys equal"
 					onClick={() => dispatch({ type: actions.delete })}
 				>
 					CE
 				</button>
+				<FuncButton func="1/x" dispatch={dispatch} />
+				<FuncButton func="sin(x)" dispatch={dispatch} />
+				<FuncButton func="cos(x)" dispatch={dispatch} />
+				<FuncButton func="tan(x)" dispatch={dispatch} />
 				<OpButton operation="+" dispatch={dispatch} />
+				<FuncButton func="x²" dispatch={dispatch} />
 				<NumButton digit="7" dispatch={dispatch} />
 				<NumButton digit="8" dispatch={dispatch} />
 				<NumButton digit="9" dispatch={dispatch} />
 				<OpButton operation="-" dispatch={dispatch} />
+				<FuncButton func="²√x" dispatch={dispatch} />
 				<NumButton digit="4" dispatch={dispatch} />
 				<NumButton digit="5" dispatch={dispatch} />
 				<NumButton digit="6" dispatch={dispatch} />
 				<OpButton operation="*" dispatch={dispatch} />
+				<button
+					className="keys"
+					onClick={() =>
+						dispatch({
+							type: actions.addOperation,
+							payload: { operation: "^" },
+						})
+					}
+				>
+					x^(y)
+				</button>
+
 				<NumButton digit="1" dispatch={dispatch} />
 				<NumButton digit="2" dispatch={dispatch} />
 				<NumButton digit="3" dispatch={dispatch} />
 				<OpButton operation="/" dispatch={dispatch} />
+				<FuncButton func="10^(x)" dispatch={dispatch} />
 				<NumButton digit="0" dispatch={dispatch} />
 				<NumButton digit="." dispatch={dispatch} />
 				<button

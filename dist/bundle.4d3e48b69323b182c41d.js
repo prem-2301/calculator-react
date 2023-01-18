@@ -10,12 +10,14 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Components_Calculator_jsx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Components/Calculator.jsx */ "./src/Components/Calculator.jsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Components_Theme_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Components/Theme.jsx */ "./src/Components/Theme.jsx");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 function App() {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_Components_Calculator_jsx__WEBPACK_IMPORTED_MODULE_0__["default"], {})
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_Components_Calculator_jsx__WEBPACK_IMPORTED_MODULE_0__["default"], {})
   });
 }
 /* harmony default export */ __webpack_exports__["default"] = (App);
@@ -36,8 +38,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NumButton.jsx */ "./src/Components/NumButton.jsx");
 /* harmony import */ var _OpButton_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OpButton.jsx */ "./src/Components/OpButton.jsx");
-/* harmony import */ var _Calculator_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Calculator.scss */ "./src/Components/Calculator.scss");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _FuncButton_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FuncButton.jsx */ "./src/Components/FuncButton.jsx");
+/* harmony import */ var _Calculator_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Calculator.scss */ "./src/Components/Calculator.scss");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -56,9 +59,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
 
 
+
 var actions = {
   addDigit: "addDigit",
   addOperation: "addOperation",
+  addFunction: "addFunction",
   clear: "clear",
   delete: "delete",
   equals: "equals"
@@ -105,6 +110,14 @@ function reducer(state, _ref) {
         operation: payload.operation,
         second: null
       });
+    case actions.addFunction:
+      if (state.second == null) {
+        return state;
+      }
+      return _objectSpread(_objectSpread({}, state), {}, {
+        overwrite: true,
+        second: evaluateUnary(state, payload.func)
+      });
     case actions.clear:
       return {};
     case actions.delete:
@@ -137,10 +150,40 @@ function reducer(state, _ref) {
       });
   }
 }
-function evaluate(_ref2) {
-  var second = _ref2.second,
-    first = _ref2.first,
-    operation = _ref2.operation;
+function evaluateUnary(_ref2, func) {
+  var second = _ref2.second;
+  var val = parseFloat(second);
+  var res1 = "";
+  // eslint-disable-next-line default-case
+  switch (func) {
+    case "x²":
+      res1 = Math.pow(val, 2);
+      break;
+    case "²√x":
+      res1 = Math.sqrt(val);
+      break;
+    case "10^(x)":
+      res1 = Math.pow(10, val);
+      break;
+    case "1/x":
+      res1 = 1 / val;
+      break;
+    case "sin(x)":
+      res1 = Math.sin(val * (Math.PI / 180));
+      break;
+    case "cos(x)":
+      res1 = Math.cos(val * (Math.PI / 180));
+      break;
+    case "tan(x)":
+      res1 = Math.tan(val * (Math.PI / 180));
+      break;
+  }
+  return res1.toString();
+}
+function evaluate(_ref3) {
+  var second = _ref3.second,
+    first = _ref3.first,
+    operation = _ref3.operation;
   var prev = parseFloat(first);
   var curr = parseFloat(second);
   if (isNaN(prev) || isNaN(curr)) {
@@ -161,6 +204,9 @@ function evaluate(_ref2) {
     case "/":
       res = prev / curr;
       break;
+    case "^":
+      res = Math.pow(prev, curr);
+      break;
   }
   return res.toString();
 }
@@ -172,14 +218,14 @@ function Calculator() {
     second = _useReducer2$.second,
     operation = _useReducer2$.operation,
     dispatch = _useReducer2[1];
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
     className: "calc",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       className: "layout",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
         className: "result",
-        children: [first, operation, second]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+        children: [first, " ", operation, " ", second]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
         className: "keys clear",
         onClick: function onClick() {
           return dispatch({
@@ -187,60 +233,92 @@ function Calculator() {
           });
         },
         children: "C"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
-        className: "keys",
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+        className: "keys equal",
         onClick: function onClick() {
           return dispatch({
             type: actions.delete
           });
         },
         children: "CE"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_OpButton_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_FuncButton_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        func: "1/x",
+        dispatch: dispatch
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_FuncButton_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        func: "sin(x)",
+        dispatch: dispatch
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_FuncButton_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        func: "cos(x)",
+        dispatch: dispatch
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_FuncButton_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        func: "tan(x)",
+        dispatch: dispatch
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_OpButton_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         operation: "+",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_FuncButton_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        func: "x\xB2",
+        dispatch: dispatch
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
         digit: "7",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
         digit: "8",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
         digit: "9",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_OpButton_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_OpButton_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         operation: "-",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_FuncButton_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        func: "\xB2\u221Ax",
+        dispatch: dispatch
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
         digit: "4",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
         digit: "5",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
         digit: "6",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_OpButton_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_OpButton_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         operation: "*",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+        className: "keys",
+        onClick: function onClick() {
+          return dispatch({
+            type: actions.addOperation,
+            payload: {
+              operation: "^"
+            }
+          });
+        },
+        children: "x^(y)"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
         digit: "1",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
         digit: "2",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
         digit: "3",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_OpButton_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_OpButton_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
         operation: "/",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_FuncButton_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        func: "10^(x)",
+        dispatch: dispatch
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
         digit: "0",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_NumButton_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
         digit: ".",
         dispatch: dispatch
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
         className: "keys equal",
         onClick: function onClick() {
           return dispatch({
@@ -253,6 +331,40 @@ function Calculator() {
   });
 }
 /* harmony default export */ __webpack_exports__["default"] = (Calculator);
+
+/***/ }),
+
+/***/ "./src/Components/FuncButton.jsx":
+/*!***************************************!*\
+  !*** ./src/Components/FuncButton.jsx ***!
+  \***************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Calculator_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Calculator.jsx */ "./src/Components/Calculator.jsx");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+function FuncButton(_ref) {
+  var dispatch = _ref.dispatch,
+    func = _ref.func;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+    className: "keys",
+    onClick: function onClick() {
+      return dispatch({
+        type: _Calculator_jsx__WEBPACK_IMPORTED_MODULE_1__.actions.addFunction,
+        payload: {
+          func: func
+        }
+      });
+    },
+    children: func
+  });
+}
+/* harmony default export */ __webpack_exports__["default"] = (FuncButton);
 
 /***/ }),
 
@@ -324,6 +436,30 @@ function OpButton(_ref) {
 
 /***/ }),
 
+/***/ "./src/Components/Theme.jsx":
+/*!**********************************!*\
+  !*** ./src/Components/Theme.jsx ***!
+  \**********************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Theme_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Theme.scss */ "./src/Components/Theme.scss");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+function Theme() {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+    className: "maindiv",
+    children: "Theme"
+  });
+}
+/* harmony default export */ __webpack_exports__["default"] = (Theme);
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/Components/Calculator.scss":
 /*!*********************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/Components/Calculator.scss ***!
@@ -340,7 +476,30 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".calc {\n  display: flex;\n  justify-content: center;\n}\n\n.layout {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  grid-template-rows: minmax(5rem, auto) repeat(5, 4rem);\n  width: 40%;\n}\n\n.result {\n  padding: 0.5rem;\n  word-wrap: break-word;\n  word-break: break-all;\n  font-size: 2rem;\n  text-align: end;\n  background-color: #7083D4;\n  grid-column: 1/-1;\n}\n\n.keys {\n  background-color: #C5CCED;\n  border: 0.01rem solid white;\n  font-size: 1.5rem;\n}\n\n.keys:hover {\n  background-color: #EDF0FF;\n  cursor: pointer;\n}\n\n.clear, .equal {\n  grid-column: span 2;\n}\n\n@media screen and (max-width: 1000px) {\n  .layout {\n    display: grid;\n    grid-template-columns: repeat(4, 1fr);\n    grid-template-rows: minmax(15rem, auto) repeat(5, 10rem);\n    width: 100%;\n  }\n  .keys {\n    background-color: #C5CCED;\n    border: 0.01rem solid white;\n    font-size: 3rem;\n  }\n  .result {\n    padding: 2rem;\n    font-size: 3.5rem;\n  }\n}", "",{"version":3,"sources":["webpack://./src/Components/Calculator.scss"],"names":[],"mappings":"AAMA;EACI,aAAA;EACA,uBAAA;AALJ;;AAQA;EACI,aAAA;EACA,qCAAA;EACA,sDAAA;EACA,UAAA;AALJ;;AASA;EACI,eAAA;EACA,qBAAA;EACA,qBAAA;EACA,eAAA;EACA,eAAA;EACA,yBAxBM;EAyBN,iBAAA;AANJ;;AASA;EACI,yBA9BW;EA+BX,2BAAA;EACA,iBAAA;AANJ;;AASA;EAEI,yBAAA;EACA,eAAA;AAPJ;;AAUA;EACI,mBAAA;AAPJ;;AAUA;EACI;IACI,aAAA;IACA,qCAAA;IACA,wDAAA;IACA,WAAA;EAPN;EAUE;IACI,yBAtDO;IAuDX,2BAAA;IACA,eAAA;EARF;EAWE;IACI,aAAA;IACA,iBAAA;EATN;AACF","sourcesContent":["$buttonColor : #C5CCED;\r\n$result : #7083D4;\r\n// $operand: #7083D4;\r\n// $cancel : #4657A1;\r\n// $equal: #24326E;\r\n\r\n.calc{\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n\r\n.layout{\r\n    display: grid;\r\n    grid-template-columns: repeat(4, 1fr);\r\n    grid-template-rows: minmax(5rem, auto) repeat(5, 4rem);\r\n    width: 40%;\r\n}\r\n\r\n\r\n.result{\r\n    padding: 0.5rem;\r\n    word-wrap: break-word;\r\n    word-break: break-all;\r\n    font-size: 2rem;\r\n    text-align: end;    \r\n    background-color: $result;\r\n    grid-column: 1/-1;\r\n}\r\n\r\n.keys{\r\n    background-color: $buttonColor;\r\n    border: 0.01rem solid white;\r\n    font-size: 1.5rem;\r\n}\r\n\r\n.keys:hover\r\n{\r\n    background-color: #EDF0FF;\r\n    cursor: pointer;\r\n}\r\n\r\n.clear, .equal {\r\n    grid-column: span 2;\r\n}\r\n\r\n@media screen and (max-width: 1000px) {\r\n    .layout{\r\n        display: grid;\r\n        grid-template-columns: repeat(4, 1fr);\r\n        grid-template-rows: minmax(15rem, auto) repeat(5, 10rem);\r\n        width: 100%;\r\n    }\r\n\r\n    .keys{\r\n        background-color: $buttonColor;\r\n    border: 0.01rem solid white;\r\n    font-size: 3rem;\r\n    }\r\n\r\n    .result{\r\n        padding: 2rem;\r\n        font-size: 3.5rem;\r\n    }\r\n  }"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".calc {\n  display: flex;\n  justify-content: center;\n}\n\n.layout {\n  display: grid;\n  grid-template-columns: repeat(5, 1fr);\n  grid-template-rows: minmax(5rem, auto) repeat(6, 4rem);\n  width: 40%;\n}\n\n.result {\n  padding: 0.5rem;\n  word-wrap: break-word;\n  word-break: break-all;\n  font-size: 2rem;\n  text-align: end;\n  grid-column: 1/-1;\n  border: 1px black solid;\n  border-radius: 0.5rem;\n  margin-bottom: 0.5rem;\n}\n\n.keys {\n  background-color: #C5CCED;\n  border: 0.01rem solid white;\n  font-size: 1.5rem;\n}\n\n.keys:hover {\n  background-color: #EDF0FF;\n  cursor: pointer;\n}\n\n.clear {\n  grid-column: span 3;\n}\n\n.equal {\n  grid-column: span 2;\n}\n\n@media screen and (max-width: 1000px) {\n  .layout {\n    display: grid;\n    grid-template-columns: repeat(5, 1fr);\n    grid-template-rows: minmax(12rem, auto) repeat(6, 7rem);\n    width: 100%;\n  }\n  .keys {\n    background-color: #C5CCED;\n    border: 0.01rem solid white;\n    font-size: 3rem;\n  }\n  .result {\n    padding: 2rem;\n    font-size: 3.5rem;\n  }\n}", "",{"version":3,"sources":["webpack://./src/Components/Calculator.scss"],"names":[],"mappings":"AAMA;EACI,aAAA;EACA,uBAAA;AALJ;;AAQA;EACI,aAAA;EACA,qCAAA;EACA,sDAAA;EACA,UAAA;AALJ;;AASA;EACI,eAAA;EACA,qBAAA;EACA,qBAAA;EACA,eAAA;EACA,eAAA;EACA,iBAAA;EACA,uBAAA;EACA,qBAAA;EACA,qBAAA;AANJ;;AASA;EACI,yBAhCW;EAiCX,2BAAA;EACA,iBAAA;AANJ;;AASA;EAEI,yBAAA;EACA,eAAA;AAPJ;;AAUA;EACI,mBAAA;AAPJ;;AAUA;EACI,mBAAA;AAPJ;;AAUA;EACI;IACI,aAAA;IACA,qCAAA;IACA,uDAAA;IACA,WAAA;EAPN;EAUE;IACI,yBA5DO;IA6DX,2BAAA;IACA,eAAA;EARF;EAWE;IACI,aAAA;IACA,iBAAA;EATN;AACF","sourcesContent":["$buttonColor : #C5CCED;\r\n$result : #7083D4;\r\n// $operand: #7083D4;\r\n// $cancel : #4657A1;\r\n// $equal: #24326E;\r\n\r\n.calc{\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n\r\n.layout{\r\n    display: grid;\r\n    grid-template-columns: repeat(5, 1fr);\r\n    grid-template-rows: minmax(5rem, auto) repeat(6, 4rem);\r\n    width: 40%;\r\n}\r\n\r\n\r\n.result{\r\n    padding: 0.5rem;\r\n    word-wrap: break-word;\r\n    word-break: break-all;\r\n    font-size: 2rem;\r\n    text-align: end;\r\n    grid-column: 1/-1;\r\n    border: 1px black solid;\r\n    border-radius: 0.5rem;\r\n    margin-bottom: 0.5rem;\r\n}\r\n\r\n.keys{\r\n    background-color: $buttonColor;\r\n    border: 0.01rem solid white;\r\n    font-size: 1.5rem;\r\n}\r\n\r\n.keys:hover\r\n{\r\n    background-color: #EDF0FF;\r\n    cursor: pointer;\r\n}\r\n\r\n.clear {\r\n    grid-column: span 3;\r\n}\r\n\r\n.equal {\r\n    grid-column: span 2;\r\n}\r\n\r\n@media screen and (max-width: 1000px) {\r\n    .layout{\r\n        display: grid;\r\n        grid-template-columns: repeat(5, 1fr);\r\n        grid-template-rows: minmax(12rem, auto) repeat(6, 7rem);\r\n        width: 100%;\r\n    }\r\n\r\n    .keys{\r\n        background-color: $buttonColor;\r\n    border: 0.01rem solid white;\r\n    font-size: 3rem;\r\n    }\r\n\r\n    .result{\r\n        padding: 2rem;\r\n        font-size: 3.5rem;\r\n    }\r\n  }"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/Components/Theme.scss":
+/*!****************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/Components/Theme.scss ***!
+  \****************************************************************************************************************/
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".maindiv {\n  position: absolute;\n  width: 2rem;\n  height: 2rem;\n  top: 0;\n  right: 20px;\n}", "",{"version":3,"sources":["webpack://./src/Components/Theme.scss"],"names":[],"mappings":"AAAA;EACI,kBAAA;EACA,WAAA;EACA,YAAA;EACA,MAAA;EACA,WAAA;AACJ","sourcesContent":[".maindiv{\r\n    position: absolute;\r\n    width: 2rem;\r\n    height: 2rem;\r\n    top: 0;\r\n    right: 20px;\r\n\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -35251,6 +35410,57 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./src/Components/Theme.scss":
+/*!***********************************!*\
+  !*** ./src/Components/Theme.scss ***!
+  \***********************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_Theme_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!../../node_modules/sass-loader/dist/cjs.js!./Theme.scss */ "./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/Components/Theme.scss");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_Theme_scss__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_Theme_scss__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_Theme_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_Theme_scss__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
 /***/ "./src/index.scss":
 /*!************************!*\
   !*** ./src/index.scss ***!
@@ -35718,4 +35928,4 @@ root.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)
 }();
 /******/ })()
 ;
-//# sourceMappingURL=bundle.015a726559232a06ab8d.js.map
+//# sourceMappingURL=bundle.4d3e48b69323b182c41d.js.map
