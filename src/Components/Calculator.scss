@@ -41,20 +41,24 @@ $result : #7083D4;
     cursor: pointer;
 }
 
-.clear {
+.span-three {
     grid-column: span 3;
 }
 
-.equal {
+.span-two {
     grid-column: span 2;
 }
 
 @media screen and (max-width: 1000px) {
+    .calc{
+        justify-content: left;
+    }
+
     .layout{
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: minmax(12rem, auto) repeat(6, 7rem);
-        width: 100%;
+        width: 90%;
     }
 
     .keys{
@@ -67,4 +71,32 @@ $result : #7083D4;
         padding: 2rem;
         font-size: 3.5rem;
     }
+  }
+
+  .orabla-keys{
+    background-color: #243440;
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  .orabla-keys:hover{
+    background-color: #5d666d;
+    cursor: pointer;
+  }
+
+  .res-orabla{
+    background-color: #243440;
+    color: white;
+  }
+
+  .orabla-eq{
+    background-color: #ec7e39;
+  }
+
+  .orabla-eq:hover{
+    background-color: #ec66139f;
+  }
+
+  .orabla-op{
+    color: #ec7e39;
   }

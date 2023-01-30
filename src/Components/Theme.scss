@@ -4,5 +4,36 @@
     height: 2rem;
     top: 0;
     right: 20px;
+}
 
+.themeGrid{
+    display: grid;
+    grid-template-rows: repeat(4, 2rem);
+    row-gap: 0.1rem;
+}
+
+.themes{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 100%;
+}
+
+.th1{
+    background: linear-gradient(to right, #ec7e39 , #243440 80%);
+}
+
+.th2{
+    background: linear-gradient(to right, #262937 30% , #ff6db6);
+}
+
+.th3{
+    background: linear-gradient(to right, #d9d8d8  , #7cd18b 60%);
+}
+
+.th4{
+    background: linear-gradient(to right, #fdfdfd 20%, #eb8285, #1194b5 85%);
 }

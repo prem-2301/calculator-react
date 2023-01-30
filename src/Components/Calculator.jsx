@@ -197,13 +197,15 @@ function Calculator() {
 					{first} {operation} {second}
 				</div>
 				<button
-					className="keys clear"
+					className="keys span-three"
+					id="clear"
 					onClick={() => dispatch({ type: actions.clear })}
 				>
 					C
 				</button>
 				<button
-					className="keys equal"
+					className="keys span-two"
+					id="clentry"
 					onClick={() => dispatch({ type: actions.delete })}
 				>
 					CE
@@ -212,17 +214,17 @@ function Calculator() {
 				<FuncButton func="sin(x)" dispatch={dispatch} />
 				<FuncButton func="cos(x)" dispatch={dispatch} />
 				<FuncButton func="tan(x)" dispatch={dispatch} />
-				<OpButton operation="+" dispatch={dispatch} />
+				<OpButton id="plus" operation="+" dispatch={dispatch} />
 				<FuncButton func="x²" dispatch={dispatch} />
 				<NumButton digit="7" dispatch={dispatch} />
 				<NumButton digit="8" dispatch={dispatch} />
 				<NumButton digit="9" dispatch={dispatch} />
-				<OpButton operation="-" dispatch={dispatch} />
+				<OpButton id="sub" operation="-" dispatch={dispatch} />
 				<FuncButton func="²√x" dispatch={dispatch} />
 				<NumButton digit="4" dispatch={dispatch} />
 				<NumButton digit="5" dispatch={dispatch} />
 				<NumButton digit="6" dispatch={dispatch} />
-				<OpButton operation="*" dispatch={dispatch} />
+				<OpButton id="mul" operation="*" dispatch={dispatch} />
 				<button
 					className="keys"
 					onClick={() =>
@@ -238,12 +240,13 @@ function Calculator() {
 				<NumButton digit="1" dispatch={dispatch} />
 				<NumButton digit="2" dispatch={dispatch} />
 				<NumButton digit="3" dispatch={dispatch} />
-				<OpButton operation="/" dispatch={dispatch} />
+				<OpButton id="divi" operation="/" dispatch={dispatch} />
 				<FuncButton func="10^(x)" dispatch={dispatch} />
 				<NumButton digit="0" dispatch={dispatch} />
 				<NumButton digit="." dispatch={dispatch} />
 				<button
-					className="keys equal"
+					className="keys span-two"
+					id="equal"
 					onClick={() => dispatch({ type: actions.equals })}
 				>
 					=

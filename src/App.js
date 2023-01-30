@@ -5,7 +5,7 @@ function App() {
 	return (
 		<div>
 			<Calculator />
-			{/* <Theme /> */}
+			<Theme />
 		</div>
 	);
 }
