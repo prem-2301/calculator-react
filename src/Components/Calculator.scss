@@ -73,6 +73,8 @@ $result : #7083D4;
     }
   }
 
+  // Orange Theme
+
   .orabla-keys{
     background-color: #243440;
     font-size: 1.5rem;
@@ -99,4 +101,87 @@ $result : #7083D4;
 
   .orabla-op{
     color: #ec7e39;
+  }
+
+  //Pink Theme
+  
+  .pink-keys{
+    background-color: #262936;
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  .pink-keys:hover{
+    background-color: #c5cceda1;
+    color: #fd6eb4;
+    cursor: pointer;
+  }
+
+  .res-pink{
+    background-color: #262936;
+    color: white;
+  }
+
+  .pink-eq{
+    background-color: #f70d7a;
+    color: white;
+  }
+
+  .pink-eq:hover{
+    background-color: #fd6eb4;
+    color: white;
+    
+  }
+
+  .pink-op{
+    background-color: #323649;
+    color: #fd6eb4;
+  }
+
+  //Green Theme
+
+  .green-keys{
+    background-color: #ebebeb;
+    font-size: 1.5rem;
+    color: #707a92;
+    border-radius: 50px;
+  }
+
+  .green-keys:hover{
+    background-color: #8a818171;
+    cursor: pointer;
+  }
+
+  .res-green{
+    background: linear-gradient(50deg, #8feb9f, #569861);
+    color: white;
+  }
+
+  .green-eq{
+    background-color: #7ace89;
+    color: white;
+  }
+
+  .green-eq:hover{
+    background-color: #75b983;
+    color: white;
+  }
+
+  //White Blue Theme
+
+  .whbl-keys{
+    background-color: #f2f2f29f;
+    font-size: 1.5rem;
+    color: black;
+    border-radius: 50px;
+  }
+
+  .whbl-op{
+    background-color: #f2f2f29f;
+    color: #e10012;
+  }
+
+  .whbl-clr{
+    background-color: #f2f2f29f;
+    color: #1194b5;
   }
