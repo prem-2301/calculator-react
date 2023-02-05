@@ -78,6 +78,8 @@ function Theme() {
 		for (let i = 0; i < type.length; i++) {
 			type[i].classList.toggle("whbl-keys");
 		}
+		let area = document.querySelectorAll(".result");
+		area[0].classList.toggle("res-whbl");
 	}
 
 	return (
